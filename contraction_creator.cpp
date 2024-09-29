@@ -164,6 +164,7 @@ public:
 
     vector<vector<float>> runContraction(const vector<Dimensions> &dimensionsList)
     {
+        vector<vector<float>> times;
         times = vector<vector<float>>(dimensionsList.size(), vector<double>(5, 0.0));
         for (const auto &dim : dimensionsList)
         {
@@ -236,6 +237,19 @@ public:
         }
 
         file.close();
+    }
+
+    string formatDimension(const vector<int64_t> &dim)
+    {
+        string str = "()";
+        for (size_t i = 0; i < dim.size(); ++i)
+        {
+            str += to_string(dim[i]);
+            if (i != dim.size() - 1)
+                str += ",";
+        }
+        str += ")";
+        return str;
     }
 
     // create a function to get a string as argument, first remove all spaces from it, then replace the * in the string with a comma
