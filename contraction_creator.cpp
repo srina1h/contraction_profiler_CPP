@@ -201,7 +201,7 @@ public:
 
             vector<float> time;
             time = run(dim.modes[0], dim.modes[1], dim.modes[2], dim.extents);
-            times.push_back(time[i]);
+            times.push_back(time);
         }
     }
 
