@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc libxlsxio_read.a CMakeFiles/xlsxio_read_STATIC.dir/lib/xlsxio_read.c.o CMakeFiles/xlsxio_read_STATIC.dir/lib/xlsxio_read_sharedstrings.c.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib libxlsxio_read.a

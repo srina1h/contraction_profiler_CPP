@@ -1,0 +1,2 @@
+/Library/Developer/CommandLineTools/usr/bin/ar qc libxlsxio_write.a CMakeFiles/xlsxio_write_STATIC.dir/lib/xlsxio_write.c.o
+/Library/Developer/CommandLineTools/usr/bin/ranlib libxlsxio_write.a
