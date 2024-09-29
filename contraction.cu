@@ -30,7 +30,7 @@
         }                                                   \
     };
 
-vector<double> performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vector<int> modeB, std::unordered_map<int, int64_t> extent, cutensorAlgo_t algo, cutensorDataType_t dataType)
+std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vector<int> modeB, std::unordered_map<int, int64_t> extent, cutensorAlgo_t algo, cutensorDataType_t dataType)
 {
     // Host element type definition
     typedef float floatTypeCompute;
@@ -42,7 +42,7 @@ vector<double> performContraction(std::vector<int> modeC, std::vector<int> modeA
         typeA = CUTENSOR_R_16F;
         typeB = CUTENSOR_R_16F;
         typeC = CUTENSOR_R_16F;
-        elementSize = sizeof(__half);
+        elementSize = sizeof(std::float16_t);
     }
     else
     {
@@ -147,12 +147,13 @@ vector<double> performContraction(std::vector<int> modeC, std::vector<int> modeA
                                                 typeB, kAlignment));
 
     cutensorTensorDescriptor_t descC;
-    HANDLE_ERROR(cutensorCreateTensorDescriptor(handle,
-                                                &descC,
-                                                nmodeC,
-                                                extentC.data(),
-                                                NULL,
-                                                typeC, kAlignment));
+    HANDLE_ERROR(cutensorCreateContraction(handle,
+                                           &desc,
+                                           descA, modeA.data(), /* unary operator A*/ CUTENSOR_OP_IDENTITY,
+                                           descB, modeB.data(), /* unary operator B*/ CUTENSOR_OP_IDENTITY,
+                                           descC, modeC.data(), /* unary operator C*/ CUTENSOR_OP_IDENTITY,
+                                           descC, modeC.data(),
+                                           descCompute));
 
     cutensorOperationDescriptor_t desc;
     HANDLE_ERROR(cutensorCreateContraction(handle,
