@@ -290,8 +290,6 @@ __global__ void performContraction(std::vector<int> modeC, std::vector<int> mode
         cudaFree(C_d);
     if (work)
         cudaFree(work);
-
-    return 0;
 }
 
 void run(std::vector<char> modeC, std::vector<char> modeA, std::vector<char> modeB, std::unordered_map<char, int64_t> extent)
