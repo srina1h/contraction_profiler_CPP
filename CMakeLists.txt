@@ -15,5 +15,5 @@ include_directories("${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES}")
 
 # link libraries with target
 add_executable(Contraction_Profiler_CPP contraction_creator.cpp)
-target_link_libraries(Contraction_Profiler_CPP cudart)
+target_link_libraries(Contraction_Profiler_CPP PRIVATE CUDA::cudart)
 set_target_properties(${PROJECT_NAME} PROPERTIES CUDA_ARCHITECTURES "80")
