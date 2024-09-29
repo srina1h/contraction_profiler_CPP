@@ -3,14 +3,11 @@ set(CMAKE_MACOSX_RPATH TRUE)
 #   cmake_policy(SET CMP0042 NEW)
 # endif()
 cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
-project(Contraction_Profiler_CPP)
+project(Contraction_Profiler_CPP CXX CUDA)
 
 # Include CPM
 include(cmake/CPM.cmake)
 
-find_package(CUDA REQUIRED)
-enable_language(CUDA)
-
-# Link xlsxio with your target
+# link libraries with target
 add_executable(Contraction_Profiler_CPP contraction_creator.cpp)
-target_link_libraries(Contraction_Profiler_CPP CUDA::cudart)
+target_link_libraries(Contraction_Profiler_CPP cudart)
