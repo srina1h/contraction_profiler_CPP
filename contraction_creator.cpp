@@ -133,9 +133,9 @@ public:
         return chars;
     }
 
-    unordered_map<char, int> populate_extent(const vector<char> &mode, const vector<int> &dim)
+    unordered_map<char, int64_t> populate_extent(const vector<char> &mode, const vector<int64_t> &dim)
     {
-        unordered_map<char, int> extent;
+        unordered_map<char, int64_t> extent;
         for (size_t i = 0; i < mode.size(); ++i)
         {
             extent[mode[i]] = dim[i];
