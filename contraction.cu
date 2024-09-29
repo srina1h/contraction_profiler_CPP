@@ -314,7 +314,7 @@ std::vector<float> run(std::vector<char> modeC, std::vector<char> modeA, std::ve
     time4 = performContraction(modeC_int, modeA_int, modeB_int, extent_int, algo);
     HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
 
-    algo = CUTENSOR_ALGO_DEAFULT_PATIENT;
+    algo = CUTENSOR_ALGO_DEFAULT_PATIENT;
 
     time5 = performContraction(modeC_int, modeA_int, modeB_int, extent_int, algo);
     HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
