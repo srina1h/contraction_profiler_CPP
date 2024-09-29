@@ -206,7 +206,7 @@ public:
         return times;
     }
 
-    void writeCsvFileWithTime(const vector<Dimensions> &dimensionsList, const string &outputFilePath, vector < vector<vector<double>>)
+    void writeCsvFileWithTime(vector<Dimensions> &dimensionsList, string &outputFilePath, vector<vector<vector<double>>> &times)
     {
         ofstream file(outputFilePath);
         if (!file.is_open())
@@ -290,7 +290,7 @@ int main(int argc, char **argv)
     ContractionCreator creator(argv[1]);
     vector<Dimensions> dimensionsList = creator.readCsvFile();
 
-    vector<vector<float>> times;
+    vector<vector<vector<double>>> times;
 
     times = creator.runContraction(dimensionsList);
     creator.writeCsvFileWithTime(dimensionsList, argv[2], times);
