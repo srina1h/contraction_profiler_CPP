@@ -30,7 +30,7 @@
         }                                                   \
     };
 
-void performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vector<int> modeB, std::unordered_map<int, int64_t> extent)
+float performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vector<int> modeB, std::unordered_map<int, int64_t> extent, cutensorAlgo_t algo)
 {
     // Host element type definition
     typedef float floatTypeA;
@@ -44,28 +44,10 @@ void performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vec
     cutensorDataType_t typeC = CUTENSOR_R_32F;
     cutensorComputeDescriptor_t descCompute = CUTENSOR_COMPUTE_DESC_32F;
 
-    printf("Include headers and define data types\n");
-
-    /* ***************************** */
-
-    // Create vector of modes
-    // std::vector<int> modeC{'m', 'u', 'n', 'v'};
-    // std::vector<int> modeA{'m', 'h', 'k', 'n'};
-    // std::vector<int> modeB{'u', 'k', 'v', 'h'};
     int nmodeA = modeA.size();
     int nmodeB = modeB.size();
     int nmodeC = modeC.size();
 
-    // Extents
-    // std::unordered_map<int, int64_t> extent;
-    // extent['m'] = 96;
-    // extent['n'] = 96;
-    // extent['u'] = 96;
-    // extent['v'] = 64;
-    // extent['h'] = 64;
-    // extent['k'] = 64;
-
-    // Create a vector of extents for each tensor
     std::vector<int64_t> extentC;
     for (auto mode : modeC)
         extentC.push_back(extent[mode]);
@@ -75,8 +57,6 @@ void performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vec
     std::vector<int64_t> extentB;
     for (auto mode : modeB)
         extentB.push_back(extent[mode]);
-
-    printf("Define modes and extents\n");
 
     /* ***************************** */
 
@@ -125,8 +105,6 @@ void performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vec
     assert(uintptr_t(B_d) % kAlignment == 0);
     assert(uintptr_t(C_d) % kAlignment == 0);
 
-    printf("Allocate, initialize and transfer tensors\n");
-
     /*************************
      * cuTENSOR
      *************************/
@@ -162,8 +140,6 @@ void performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vec
                                                 NULL, /*stride*/
                                                 typeC, kAlignment));
 
-    printf("Initialize cuTENSOR and tensor descriptors\n");
-
     /*******************************
      * Create Contraction Descriptor
      *******************************/
@@ -190,14 +166,12 @@ void performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vec
 
     assert(scalarType == CUTENSOR_R_32F);
     typedef float floatTypeCompute;
-    floatTypeCompute alpha = (floatTypeCompute)1.1f;
+    floatTypeCompute alpha = (floatTypeCompute)1.0f;
     floatTypeCompute beta = (floatTypeCompute)0.f;
 
     /**************************
      * Set the algorithm to use
      ***************************/
-
-    const cutensorAlgo_t algo = CUTENSOR_ALGO_DEFAULT;
 
     cutensorPlanPreference_t planPref;
     HANDLE_ERROR(cutensorCreatePlanPreference(
@@ -259,11 +233,24 @@ void performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vec
     cudaStream_t stream;
     HANDLE_CUDA_ERROR(cudaStreamCreate(&stream));
 
+    // time the operation
+    cudaEvent_t start, stop;
+    HANDLE_CUDA_ERROR(cudaEventCreate(&start));
+    HANDLE_CUDA_ERROR(cudaEventCreate(&stop));
+    HANDLE_CUDA_ERROR(cudaEventRecord(start, stream));
+
     HANDLE_ERROR(cutensorContract(handle,
                                   plan,
                                   (void *)&alpha, A_d, B_d,
                                   (void *)&beta, C_d, C_d,
                                   work, actualWorkspaceSize, stream));
+
+    HANDLE_CUDA_ERROR(cudaEventRecord(stop, stream));
+    HANDLE_CUDA_ERROR(cudaEventSynchronize(stop));
+    float milliseconds = 0;
+    HANDLE_CUDA_ERROR(cudaEventElapsedTime(&milliseconds, start, stop));
+    // convert time to seconds
+    milliseconds /= 1000;
 
     /**********************
      * Free allocated data
@@ -290,9 +277,11 @@ void performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vec
         cudaFree(C_d);
     if (work)
         cudaFree(work);
+
+    return milliseconds;
 }
 
-void run(std::vector<char> modeC, std::vector<char> modeA, std::vector<char> modeB, std::unordered_map<char, int64_t> extent)
+vector<float> run(std::vector<char> modeC, std::vector<char> modeA, std::vector<char> modeB, std::unordered_map<char, int64_t> extent)
 {
     // Convert char vectors to int vectors
     std::vector<int> modeC_int(modeC.begin(), modeC.end());
@@ -304,6 +293,32 @@ void run(std::vector<char> modeC, std::vector<char> modeA, std::vector<char> mod
     for (auto const &x : extent)
         extent_int[x.first] = x.second;
 
-    performContraction(modeC_int, modeA_int, modeB_int, extent_int);
+    cutensorAlgo_t algo = CUTENSOR_ALGO_DEFAULT;
+
+    float time1, time2, time3, time4, time5;
+    time1 = performContraction(modeC_int, modeA_int, modeB_int, extent_int, algo);
     HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
+
+    algo = CUTENSOR_ALGO_GETT;
+
+    time2 = performContraction(modeC_int, modeA_int, modeB_int, extent_int, algo);
+    HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
+
+    algo = CUTENSOR_ALGO_TGETT;
+
+    time3 = performContraction(modeC_int, modeA_int, modeB_int, extent_int, algo);
+    HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
+
+    algo = CUTENSOR_ALGO_TTGT;
+
+    time4 = performContraction(modeC_int, modeA_int, modeB_int, extent_int, algo);
+    HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
+
+    algo = CUTENSOR_ALGO_DEAFULT_PATIENT;
+
+    time5 = performContraction(modeC_int, modeA_int, modeB_int, extent_int, algo);
+    HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
+
+    vector<float> time = {time1, time2, time3, time4, time5};
+    return time;
 }

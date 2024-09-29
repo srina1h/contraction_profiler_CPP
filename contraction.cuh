@@ -3,4 +3,4 @@
 #include <vector>
 #include <stdio.h>
 
-void run(std::vector<char> modeC, std::vector<char> modeA, std::vector<char> modeB, std::unordered_map<char, int64_t> extent);
+vector<float> run(std::vector<char> modeC, std::vector<char> modeA, std::vector<char> modeB, std::unordered_map<char, int64_t> extent);

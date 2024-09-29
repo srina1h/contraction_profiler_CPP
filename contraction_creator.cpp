@@ -162,8 +162,9 @@ public:
         return final_extent;
     }
 
-    void createContractionVariables(const vector<Dimensions> &dimensionsList)
+    void runContraction(const vector<Dimensions> &dimensionsList)
     {
+        times = vector<vector<double>>(dimensionsList.size(), vector<double>(5, 0.0));
         for (const auto &dim : dimensionsList)
         {
             cout << "Dimension_A: ";
@@ -197,10 +198,45 @@ public:
             }
             cout << endl;
 
-            // now pass these variables to a CUDA kernel contained in contraction.cu
+            vector<float> time;
+            time = run(dim.modes[0], dim.modes[1], dim.modes[2], dim.extents);
 
-            run(dim.modes[2], dim.modes[0], dim.modes[1], dim.extents);
+            for (size_t i = 0; i < time.size(); ++i)
+            {
+                times.push_back(time[i]);
+            }
         }
+    }
+
+    void writeCsvFileWithTime(const vector<Dimensions> &dimensionsList, const string &outputFilePath, const vector<vector<double>> &times)
+    {
+        ofstream file(outputFilePath);
+        if (!file.is_open())
+        {
+            cerr << "Error opening output CSV file" << endl;
+            return;
+        }
+
+        for (size_t i = 0; i < dimensionsList.size(); ++i)
+        {
+            const auto &dim = dimensionsList[i];
+            const auto &time = times[i];
+
+            file << formatDimension(dim.Dimension_A_extents) << ","
+                 << formatDimension(dim.Dimension_B_extents) << ","
+                 << formatDimension(dim.Dimension_C_extents) << ","
+                 << dim.Contraction_indices << ","
+                 << dim.Einstein_notation << ","
+                 << dim.data_type << ","
+                 << "label" << ","   // Placeholder for label
+                 << time[0] << ","   // default
+                 << time[1] << ","   // gett
+                 << time[2] << ","   // tgett
+                 << time[3] << ","   // ttgt
+                 << time[4] << "\n"; // defpat
+        }
+
+        file.close();
     }
 
     // create a function to get a string as argument, first remove all spaces from it, then replace the * in the string with a comma
@@ -234,8 +270,9 @@ private:
 
 int main(int argc, char **argv)
 {
-    ContractionCreator creator("/Users/srinath/Documents/GitHub/contraction_profiler_CPP/high_dim_con.csv");
+    ContractionCreator creator(argv[1]);
     vector<Dimensions> dimensionsList = creator.readCsvFile();
-    creator.createContractionVariables(dimensionsList);
+    creator.runContraction(dimensionsList);
+    creator.writeCsvFileWithTime(dimensionsList, argv[2], creator.times);
     return 0;
 }
