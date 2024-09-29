@@ -226,7 +226,7 @@ private:
         while (getline(ss, item, ','))
         {
             //convert item to int64_t
-            extents.push_back(int64_t(stoi(item)));
+            extents.push_back((int64_t)stoi(item));
         }
         return extents;
     }
