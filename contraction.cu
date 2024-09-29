@@ -30,7 +30,7 @@
         }                                                   \
     };
 
-__global__ void performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vector<int> modeB, std::unordered_map<int, int64_t> extent, std::vector<int64_t>)
+__global__ void performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vector<int> modeB, std::unordered_map<int, int64_t> extent)
 {
     // Host element type definition
     typedef float floatTypeA;
@@ -296,7 +296,7 @@ __global__ void performContraction(std::vector<int> modeC, std::vector<int> mode
 
 namespace contraction
 {
-    void run(std::vector<int> modeC, std::vector<int> modeA, std::vector<int> modeB, std::unordered_map<int, int64_t> extent, std::vector<int64_t>)
+    void run(std::vector<char> modeC, std::vector<char> modeA, std::vector<char> modeB, std::unordered_map<char, int64_t> extent)
     {
 
         performContraction<<<1, 1>>>(modeC, modeA, modeB, extent);
