@@ -101,7 +101,7 @@ public:
         return dimensionsList;
     }
 
-    vector<vector<char>> set_modes(string con_type)
+    vector<vector<char> > set_modes(string con_type)
     {
         // Remove all spaces from the string
         con_type.erase(remove(con_type.begin(), con_type.end(), ' '), con_type.end());
@@ -115,7 +115,7 @@ public:
         vector<char> mode_b = split_to_chars(B);
         vector<char> mode_c = split_to_chars(C);
 
-        vector<vector<char>> modes;
+        vector<vector<char> > modes;
         modes.push_back(mode_a);
         modes.push_back(mode_b);
         modes.push_back(mode_c);
@@ -143,11 +143,11 @@ public:
         return extent;
     }
 
-    unordered_map<char, int64_t> set_extents(const vector<int> &adim, const vector<int> &bdim, const vector<int> &cdim, const vector<char> &mode_a, const vector<char> &mode_b, const vector<char> &mode_c)
+    unordered_map<char, int64_t> set_extents(const vector<int64_t> &adim, const vector<int64_t> &bdim, const vector<int64_t> &cdim, const vector<char> &mode_a, const vector<char> &mode_b, const vector<char> &mode_c)
     {
-        unordered_map<char, int> extent_a = populate_extent(mode_a, adim);
-        unordered_map<char, int> extent_b = populate_extent(mode_b, bdim);
-        unordered_map<char, int> extent_c = populate_extent(mode_c, cdim);
+        unordered_map<char, int64_t> extent_a = populate_extent(mode_a, adim);
+        unordered_map<char, int64_t> extent_b = populate_extent(mode_b, bdim);
+        unordered_map<char, int64_t> extent_c = populate_extent(mode_c, cdim);
 
         // combine the extents into a final dictionary and return
         unordered_map<char, int64_t> final_extent = extent_a;
@@ -215,17 +215,18 @@ public:
 private:
     string filePath;
 
-    vector<int> parseDimension(const string &dimension)
+    vector<int64_t> parseDimension(const string &dimension)
     {
         cout << dimension << endl;
-        vector<int> extents;
+        vector<int64_t> extents;
         string cleaned = dimension.substr(1, dimension.size() - 2);
         cout << cleaned << endl;
         stringstream ss(cleaned);
         string item;
         while (getline(ss, item, ','))
         {
-            extents.push_back(stoi(item));
+            //convert item to int64_t
+            extents.push_back(int64_t((item)));
         }
         return extents;
     }
