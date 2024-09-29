@@ -281,7 +281,7 @@ float performContraction(std::vector<int> modeC, std::vector<int> modeA, std::ve
     return milliseconds;
 }
 
-vector<float> run(std::vector<char> modeC, std::vector<char> modeA, std::vector<char> modeB, std::unordered_map<char, int64_t> extent)
+std::vector<float> run(std::vector<char> modeC, std::vector<char> modeA, std::vector<char> modeB, std::unordered_map<char, int64_t> extent)
 {
     // Convert char vectors to int vectors
     std::vector<int> modeC_int(modeC.begin(), modeC.end());
@@ -319,6 +319,6 @@ vector<float> run(std::vector<char> modeC, std::vector<char> modeA, std::vector<
     time5 = performContraction(modeC_int, modeA_int, modeB_int, extent_int, algo);
     HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
 
-    vector<float> time = {time1, time2, time3, time4, time5};
+    std::vector<float> time = {time1, time2, time3, time4, time5};
     return time;
 }
