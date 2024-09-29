@@ -200,7 +200,7 @@ public:
             cout << endl;
 
             vector<vector<double>> time;
-            time = run(dim.modes[0], dim.modes[1], dim.modes[2], dim.extents);
+            time = run(dim.modes[0], dim.modes[1], dim.modes[2], dim.extents, CUTENSOR_R_32F);
             times.push_back(time);
         }
         return times;
@@ -226,7 +226,7 @@ public:
                  << formatDimension(dim.Dimension_B_extents) << ","
                  << formatDimension(dim.Dimension_C_extents) << ","
                  << "\"" << dim.Contraction_indices << "\"" << ","
-                 << "\"" << dim.Einstein_notation "\"" << ","
+                 << "\"" << dim.Einstein_notation << "\"" << ","
                  << dim.data_type << ","
                  << time[0][0] << ","   // default
                  << time[0][1] << ","   // default flops
@@ -285,7 +285,7 @@ private:
     }
 };
 
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 {
     ContractionCreator creator(argv[1]);
     vector<Dimensions> dimensionsList = creator.readCsvFile();
