@@ -293,6 +293,15 @@ int main(int argc, char *argv[])
     vector<vector<vector<double>>> times;
 
     times = creator.runContraction(dimensionsList);
-    creator.writeCsvFileWithTime(dimensionsList, (string)argv[2], times);
+    string outputFilePath;
+    if (argc < 3)
+    {
+        outputFilePath = "output.csv";
+    }
+    else
+    {
+        outputFilePath = (string)argv[2];
+    }
+    creator.writeCsvFileWithTime(dimensionsList, outputFilePath, times);
     return 0;
 }
