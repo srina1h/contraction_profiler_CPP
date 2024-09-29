@@ -101,7 +101,7 @@ public:
         return dimensionsList;
     }
 
-    vector<vector<char> > set_modes(string con_type)
+    vector<vector<char>> set_modes(string con_type)
     {
         // Remove all spaces from the string
         con_type.erase(remove(con_type.begin(), con_type.end(), ' '), con_type.end());
@@ -115,7 +115,7 @@ public:
         vector<char> mode_b = split_to_chars(B);
         vector<char> mode_c = split_to_chars(C);
 
-        vector<vector<char> > modes;
+        vector<vector<char>> modes;
         modes.push_back(mode_a);
         modes.push_back(mode_b);
         modes.push_back(mode_c);
@@ -162,9 +162,9 @@ public:
         return final_extent;
     }
 
-    vector<vector<double> > runContraction(const vector<Dimensions> &dimensionsList)
+    vector<vector<float>> runContraction(const vector<Dimensions> &dimensionsList)
     {
-        times = vector<vector<double> >(dimensionsList.size(), vector<double>(5, 0.0));
+        times = vector<vector<float>>(dimensionsList.size(), vector<double>(5, 0.0));
         for (const auto &dim : dimensionsList)
         {
             cout << "Dimension_A: ";
@@ -198,7 +198,7 @@ public:
             }
             cout << endl;
 
-            vector<double> time;
+            vector<float> time;
             time = run(dim.modes[0], dim.modes[1], dim.modes[2], dim.extents);
 
             for (size_t i = 0; i < time.size(); ++i)
@@ -208,7 +208,7 @@ public:
         }
     }
 
-    void writeCsvFileWithTime(const vector<Dimensions> &dimensionsList, const string &outputFilePath, const vector<vector<double>> &times)
+    void writeCsvFileWithTime(const vector<Dimensions> &dimensionsList, const string &outputFilePath, const vector<vector<float>> &times)
     {
         ofstream file(outputFilePath);
         if (!file.is_open())
@@ -228,7 +228,6 @@ public:
                  << dim.Contraction_indices << ","
                  << dim.Einstein_notation << ","
                  << dim.data_type << ","
-                 << "label" << ","   // Placeholder for label
                  << time[0] << ","   // default
                  << time[1] << ","   // gett
                  << time[2] << ","   // tgett
@@ -273,7 +272,7 @@ int main(int argc, char **argv)
     ContractionCreator creator(argv[1]);
     vector<Dimensions> dimensionsList = creator.readCsvFile();
 
-    vector<vector<double>> times;
+    vector<vector<float>> times;
 
     times = creator.runContraction(dimensionsList);
     creator.writeCsvFileWithTime(dimensionsList, argv[2], times);
