@@ -272,7 +272,10 @@ int main(int argc, char **argv)
 {
     ContractionCreator creator(argv[1]);
     vector<Dimensions> dimensionsList = creator.readCsvFile();
-    creator.runContraction(dimensionsList);
-    creator.writeCsvFileWithTime(dimensionsList, argv[2], creator.times);
+
+    vector<vector<double>> times;
+
+    times = creator.runContraction(dimensionsList);
+    creator.writeCsvFileWithTime(dimensionsList, argv[2], times);
     return 0;
 }
