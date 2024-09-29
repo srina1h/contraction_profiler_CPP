@@ -101,7 +101,7 @@ public:
         return dimensionsList;
     }
 
-    vector<vector<char>> set_modes(string con_type)
+    vector<vector<char> > set_modes(string con_type)
     {
         // Remove all spaces from the string
         con_type.erase(remove(con_type.begin(), con_type.end(), ' '), con_type.end());
@@ -115,7 +115,7 @@ public:
         vector<char> mode_b = split_to_chars(B);
         vector<char> mode_c = split_to_chars(C);
 
-        vector<vector<char>> modes;
+        vector<vector<char> > modes;
         modes.push_back(mode_a);
         modes.push_back(mode_b);
         modes.push_back(mode_c);
@@ -162,9 +162,9 @@ public:
         return final_extent;
     }
 
-    void runContraction(const vector<Dimensions> &dimensionsList)
+    vector<vector<double> > runContraction(const vector<Dimensions> &dimensionsList)
     {
-        times = vector<vector<double>>(dimensionsList.size(), vector<double>(5, 0.0));
+        times = vector<vector<double> >(dimensionsList.size(), vector<double>(5, 0.0));
         for (const auto &dim : dimensionsList)
         {
             cout << "Dimension_A: ";
@@ -198,7 +198,7 @@ public:
             }
             cout << endl;
 
-            vector<float> time;
+            vector<double> time;
             time = run(dim.modes[0], dim.modes[1], dim.modes[2], dim.extents);
 
             for (size_t i = 0; i < time.size(); ++i)

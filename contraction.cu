@@ -30,7 +30,7 @@
         }                                                   \
     };
 
-float performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vector<int> modeB, std::unordered_map<int, int64_t> extent, cutensorAlgo_t algo)
+double performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vector<int> modeB, std::unordered_map<int, int64_t> extent, cutensorAlgo_t algo)
 {
     // Host element type definition
     typedef float floatTypeA;
@@ -247,7 +247,7 @@ float performContraction(std::vector<int> modeC, std::vector<int> modeA, std::ve
 
     HANDLE_CUDA_ERROR(cudaEventRecord(stop, stream));
     HANDLE_CUDA_ERROR(cudaEventSynchronize(stop));
-    float milliseconds = 0;
+    double milliseconds = 0;
     HANDLE_CUDA_ERROR(cudaEventElapsedTime(&milliseconds, start, stop));
     // convert time to seconds
     milliseconds /= 1000;
@@ -281,7 +281,7 @@ float performContraction(std::vector<int> modeC, std::vector<int> modeA, std::ve
     return milliseconds;
 }
 
-std::vector<float> run(std::vector<char> modeC, std::vector<char> modeA, std::vector<char> modeB, std::unordered_map<char, int64_t> extent)
+std::vector<double> run(std::vector<char> modeC, std::vector<char> modeA, std::vector<char> modeB, std::unordered_map<char, int64_t> extent)
 {
     // Convert char vectors to int vectors
     std::vector<int> modeC_int(modeC.begin(), modeC.end());
@@ -295,7 +295,7 @@ std::vector<float> run(std::vector<char> modeC, std::vector<char> modeA, std::ve
 
     cutensorAlgo_t algo = CUTENSOR_ALGO_DEFAULT;
 
-    float time1, time2, time3, time4, time5;
+    double time1, time2, time3, time4, time5;
     time1 = performContraction(modeC_int, modeA_int, modeB_int, extent_int, algo);
     HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
 
@@ -319,6 +319,6 @@ std::vector<float> run(std::vector<char> modeC, std::vector<char> modeA, std::ve
     time5 = performContraction(modeC_int, modeA_int, modeB_int, extent_int, algo);
     HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
 
-    std::vector<float> time = {time1, time2, time3, time4, time5};
+    std::vector<double> time = {time1, time2, time3, time4, time5};
     return time;
 }
