@@ -295,7 +295,7 @@ std::vector<float> run(std::vector<char> modeC, std::vector<char> modeA, std::ve
 
     cutensorAlgo_t algo = CUTENSOR_ALGO_DEFAULT;
 
-    double time1, time2, time3, time4, time5;
+    float time1, time2, time3, time4, time5;
     time1 = performContraction(modeC_int, modeA_int, modeB_int, extent_int, algo);
     HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
 
