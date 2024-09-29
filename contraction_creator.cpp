@@ -165,7 +165,7 @@ public:
     vector<vector<vector<double>>> runContraction(vector<Dimensions> &dimensionsList)
     {
         vector<vector<vector<double>>> times;
-        times = vector<vector<vector<double>>>(dimensionsList.size(), vector<vector<double>>(5, vector<double>(5, 0.0)));
+
         for (const auto &dim : dimensionsList)
         {
             cout << "Dimension_A: ";
