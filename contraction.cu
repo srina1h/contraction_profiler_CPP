@@ -30,7 +30,7 @@
         }                                                   \
     };
 
-__global__ void performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vector<int> modeB, std::unordered_map<int, int64_t> extent)
+void performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vector<int> modeB, std::unordered_map<int, int64_t> extent)
 {
     // Host element type definition
     typedef float floatTypeA;
@@ -304,6 +304,6 @@ void run(std::vector<char> modeC, std::vector<char> modeA, std::vector<char> mod
     for (auto const &x : extent)
         extent_int[x.first] = x.second;
 
-    performContraction<<<1, 1>>>(modeC_int, modeA_int, modeB_int, extent_int);
+    performContraction(modeC_int, modeA_int, modeB_int, extent_int);
     HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
 }
