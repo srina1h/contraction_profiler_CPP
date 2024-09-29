@@ -265,6 +265,9 @@ std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> 
     if (work)
         cudaFree(work);
 
+    printf("Timing: %f ms\n", timing);
+    printf("GFLOPS: %f\n", gflops / timing);
+
     std::vector<double> returnVector = {(double)timing, gflops};
 
     return returnVector;
