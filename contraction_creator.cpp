@@ -17,9 +17,9 @@ using namespace std;
 
 struct Dimensions
 {
-    vector<int> Dimension_A_extents;
-    vector<int> Dimension_B_extents;
-    vector<int> Dimension_C_extents;
+    vector<int64_t> Dimension_A_extents;
+    vector<int64_t> Dimension_B_extents;
+    vector<int64_t> Dimension_C_extents;
     string Contraction_indices;
     string Einstein_notation;
     string data_type;
