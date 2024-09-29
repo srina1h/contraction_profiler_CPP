@@ -294,12 +294,9 @@ __global__ void performContraction(std::vector<int> modeC, std::vector<int> mode
     return 0;
 }
 
-namespace contraction
+void run(std::vector<char> modeC, std::vector<char> modeA, std::vector<char> modeB, std::unordered_map<char, int64_t> extent)
 {
-    void run(std::vector<char> modeC, std::vector<char> modeA, std::vector<char> modeB, std::unordered_map<char, int64_t> extent)
-    {
 
-        performContraction<<<1, 1>>>(modeC, modeA, modeB, extent);
-        HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
-    }
+    performContraction<<<1, 1>>>(modeC, modeA, modeB, extent);
+    HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
 }

@@ -101,7 +101,7 @@ public:
         return dimensionsList;
     }
 
-    vector<vector<char> > set_modes(string con_type)
+    vector<vector<char>> set_modes(string con_type)
     {
         // Remove all spaces from the string
         con_type.erase(remove(con_type.begin(), con_type.end(), ' '), con_type.end());
@@ -115,7 +115,7 @@ public:
         vector<char> mode_b = split_to_chars(B);
         vector<char> mode_c = split_to_chars(C);
 
-        vector<vector<char> > modes;
+        vector<vector<char>> modes;
         modes.push_back(mode_a);
         modes.push_back(mode_b);
         modes.push_back(mode_c);
@@ -199,7 +199,7 @@ public:
 
             // now pass these variables to a CUDA kernel contained in contraction.cu
 
-            contraction::run(dim.modes[2], dim.modes[0], dim.modes[1], dim.extents);
+            run(dim.modes[2], dim.modes[0], dim.modes[1], dim.extents);
         }
     }
 
@@ -225,7 +225,7 @@ private:
         string item;
         while (getline(ss, item, ','))
         {
-            //convert item to int64_t
+            // convert item to int64_t
             extents.push_back((int64_t)stoi(item));
         }
         return extents;
