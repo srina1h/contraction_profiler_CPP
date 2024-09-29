@@ -13,4 +13,4 @@ enable_language(CUDA)
 
 # Link xlsxio with your target
 add_executable(Contraction_Profiler_CPP contraction_creator.cpp)
-target_link_libraries(my_cuda_app CUDA::cudart)
+target_link_libraries(Contraction_Profiler_CPP CUDA::cudart)
