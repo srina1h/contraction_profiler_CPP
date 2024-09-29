@@ -23,8 +23,8 @@ struct Dimensions
     string Contraction_indices;
     string Einstein_notation;
     string data_type;
-    vector<vector<char> > modes;
-    unordered_map<char, int> extents;
+    vector<vector<char>> modes;
+    unordered_map<char, int64_t> extents;
 };
 
 class ContractionCreator
@@ -45,7 +45,7 @@ public:
         string line;
         // the first line contains the headers
         // add all the headers into another vector
-        vector<string> headers;   
+        vector<string> headers;
         getline(file, line);
         stringstream ss(line);
         string item;
@@ -101,7 +101,7 @@ public:
         return dimensionsList;
     }
 
-    vector<vector<char> > set_modes(string con_type)
+    vector<vector<char>> set_modes(string con_type)
     {
         // Remove all spaces from the string
         con_type.erase(remove(con_type.begin(), con_type.end(), ' '), con_type.end());
@@ -115,7 +115,7 @@ public:
         vector<char> mode_b = split_to_chars(B);
         vector<char> mode_c = split_to_chars(C);
 
-        vector<vector<char> > modes;
+        vector<vector<char>> modes;
         modes.push_back(mode_a);
         modes.push_back(mode_b);
         modes.push_back(mode_c);
@@ -143,14 +143,14 @@ public:
         return extent;
     }
 
-    unordered_map<char, int> set_extents(const vector<int> &adim, const vector<int> &bdim, const vector<int> &cdim, const vector<char> &mode_a, const vector<char> &mode_b, const vector<char> &mode_c)
+    unordered_map<char, int64_t> set_extents(const vector<int> &adim, const vector<int> &bdim, const vector<int> &cdim, const vector<char> &mode_a, const vector<char> &mode_b, const vector<char> &mode_c)
     {
         unordered_map<char, int> extent_a = populate_extent(mode_a, adim);
         unordered_map<char, int> extent_b = populate_extent(mode_b, bdim);
         unordered_map<char, int> extent_c = populate_extent(mode_c, cdim);
 
         // combine the extents into a final dictionary and return
-        unordered_map<char, int> final_extent = extent_a;
+        unordered_map<char, int64_t> final_extent = extent_a;
         for (const auto &[key, value] : extent_b)
         {
             final_extent[key] = value;
@@ -200,11 +200,10 @@ public:
             // now pass these variables to a CUDA kernel contained in contraction.cu
 
             contraction::run(dim.modes[2], dim.modes[0], dim.modes[1], dim.extents);
-
         }
     }
 
-    //create a function to get a string as argument, first remove all spaces from it, then replace the * in the string with a comma
+    // create a function to get a string as argument, first remove all spaces from it, then replace the * in the string with a comma
 
     string format_einstein_notation(string str)
     {
