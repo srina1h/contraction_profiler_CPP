@@ -11,6 +11,8 @@
 #include <sstream>
 #include <unordered_map>
 
+#include "contraction.cuh"
+
 using namespace std;
 
 struct Dimensions
@@ -194,6 +196,11 @@ public:
                 cout << key << " : " << value << " ";
             }
             cout << endl;
+
+            // now pass these variables to a CUDA kernel contained in contraction.cu
+
+            contraction::run(dim.modes[2], dim.modes[0], dim.modes[1], dim.extents);
+
         }
     }
 

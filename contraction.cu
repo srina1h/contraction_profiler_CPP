@@ -7,6 +7,7 @@
 
 #include <unordered_map>
 #include <vector>
+#include <contraction.cuh>
 
 // Handle cuTENSOR errors
 #define HANDLE_ERROR(x)                                         \
@@ -29,7 +30,7 @@
         }                                                   \
     };
 
-int main(int argc, char **argv)
+__global__ void performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vector<int> modeB, std::unordered_map<int, int64_t> extent, std::vector<int64_t>)
 {
     // Host element type definition
     typedef float floatTypeA;
@@ -48,21 +49,21 @@ int main(int argc, char **argv)
     /* ***************************** */
 
     // Create vector of modes
-    std::vector<int> modeC{'m', 'u', 'n', 'v'};
-    std::vector<int> modeA{'m', 'h', 'k', 'n'};
-    std::vector<int> modeB{'u', 'k', 'v', 'h'};
+    // std::vector<int> modeC{'m', 'u', 'n', 'v'};
+    // std::vector<int> modeA{'m', 'h', 'k', 'n'};
+    // std::vector<int> modeB{'u', 'k', 'v', 'h'};
     int nmodeA = modeA.size();
     int nmodeB = modeB.size();
     int nmodeC = modeC.size();
 
     // Extents
-    std::unordered_map<int, int64_t> extent;
-    extent['m'] = 96;
-    extent['n'] = 96;
-    extent['u'] = 96;
-    extent['v'] = 64;
-    extent['h'] = 64;
-    extent['k'] = 64;
+    // std::unordered_map<int, int64_t> extent;
+    // extent['m'] = 96;
+    // extent['n'] = 96;
+    // extent['u'] = 96;
+    // extent['v'] = 64;
+    // extent['h'] = 64;
+    // extent['k'] = 64;
 
     // Create a vector of extents for each tensor
     std::vector<int64_t> extentC;
@@ -291,4 +292,14 @@ int main(int argc, char **argv)
         cudaFree(work);
 
     return 0;
+}
+
+namespace contraction
+{
+    void run(std::vector<int> modeC, std::vector<int> modeA, std::vector<int> modeB, std::unordered_map<int, int64_t> extent, std::vector<int64_t>)
+    {
+
+        performContraction<<<1, 1>>>(modeC, modeA, modeB, extent);
+        HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
+    }
 }
