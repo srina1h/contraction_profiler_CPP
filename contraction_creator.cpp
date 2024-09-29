@@ -165,7 +165,7 @@ public:
     vector<vector<float>> runContraction(const vector<Dimensions> &dimensionsList)
     {
         vector<vector<float>> times;
-        times = vector<vector<float>>(dimensionsList.size(), vector<double>(5, 0.0));
+        times = vector<vector<float>>(dimensionsList.size(), vector<float>(5, 0.0));
         for (const auto &dim : dimensionsList)
         {
             cout << "Dimension_A: ";
@@ -201,11 +201,7 @@ public:
 
             vector<float> time;
             time = run(dim.modes[0], dim.modes[1], dim.modes[2], dim.extents);
-
-            for (size_t i = 0; i < time.size(); ++i)
-            {
-                times.push_back(time[i]);
-            }
+            times.push_back(time[i]);
         }
     }
 
