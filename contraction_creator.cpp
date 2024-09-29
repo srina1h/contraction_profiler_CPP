@@ -203,6 +203,7 @@ public:
             time = run(dim.modes[0], dim.modes[1], dim.modes[2], dim.extents);
             times.push_back(time);
         }
+        return times;
     }
 
     void writeCsvFileWithTime(const vector<Dimensions> &dimensionsList, const string &outputFilePath, const vector<vector<float>> &times)
