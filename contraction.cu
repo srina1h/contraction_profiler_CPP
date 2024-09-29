@@ -7,7 +7,7 @@
 
 #include <unordered_map>
 #include <vector>
-#include <contraction.cuh>
+#include "contraction.cuh"
 
 // Handle cuTENSOR errors
 #define HANDLE_ERROR(x)                                         \
