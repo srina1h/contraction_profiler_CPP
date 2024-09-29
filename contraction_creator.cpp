@@ -245,14 +245,14 @@ public:
 
     string formatDimension(const vector<int64_t> &dim)
     {
-        string str = "(\"";
+        string str = "\"(";
         for (size_t i = 0; i < dim.size(); ++i)
         {
             str += to_string(dim[i]);
             if (i != dim.size() - 1)
                 str += ",";
         }
-        str += "\")";
+        str += ")\"";
         return str;
     }
 
