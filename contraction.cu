@@ -270,7 +270,7 @@ std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> 
     return returnVector;
 }
 
-std::vector < vector << double >> run(std::vector<char> modeC, std::vector<char> modeA, std::vector<char> modeB, std::unordered_map<char, int64_t> extent, cutensorDataType_t dataType)
+std::vector<std::vector<double>> run(std::vector<char> modeC, std::vector<char> modeA, std::vector<char> modeB, std::unordered_map<char, int64_t> extent, cutensorDataType_t dataType = CUTENSOR_R_32F)
 {
     std::vector<int> modeC_int(modeC.begin(), modeC.end());
     std::vector<int> modeA_int(modeA.begin(), modeA.end());
@@ -282,7 +282,7 @@ std::vector < vector << double >> run(std::vector<char> modeC, std::vector<char>
 
     cutensorAlgo_t algo = CUTENSOR_ALGO_DEFAULT;
 
-    vector<double> returnVec1, returnVec2, returnVec3, returnVec4, returnVec5;
+    std::vector<double> returnVec1, returnVec2, returnVec3, returnVec4, returnVec5;
 
     returnVec1 = performContraction(modeC_int, modeA_int, modeB_int, extent_int, algo, dataType);
     HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
@@ -307,6 +307,6 @@ std::vector < vector << double >> run(std::vector<char> modeC, std::vector<char>
     returnVec5 = performContraction(modeC_int, modeA_int, modeB_int, extent_int, algo, dataType);
     HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
 
-    std::vector < vector << double >> returnVec = {returnVec1, returnVec2, returnVec3, returnVec4, returnVec5};
+    std::vector<std::vector<double>> returnVec = {returnVec1, returnVec2, returnVec3, returnVec4, returnVec5};
     return returnVec;
 }
