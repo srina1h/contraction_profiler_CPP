@@ -30,27 +30,27 @@
         }                                                   \
     };
 
-std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vector<int> modeB, std::unordered_map<int, int64_t> extent, cutensorAlgo_t algo, cutensorDataType_t dataType)
+std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vector<int> modeB, std::unordered_map<int, int64_t> extent, cutensorAlgo_t algo, cutensorDataType_t dataType = CUTENSOR_R_32F)
 {
     // Host element type definition
     typedef float floatTypeCompute;
     cutensorDataType_t typeA, typeB, typeC;
     size_t elementSize;
 
-    if (dataType == CUTENSOR_R_16F)
-    {
-        typeA = CUTENSOR_R_16F;
-        typeB = CUTENSOR_R_16F;
-        typeC = CUTENSOR_R_16F;
-        elementSize = sizeof(std::float16_t);
-    }
-    else
-    {
-        typeA = CUTENSOR_R_32F;
-        typeB = CUTENSOR_R_32F;
-        typeC = CUTENSOR_R_32F;
-        elementSize = sizeof(float);
-    }
+    // if (dataType == CUTENSOR_R_16F)
+    // {
+    //     typeA = CUTENSOR_R_16F;
+    //     typeB = CUTENSOR_R_16F;
+    //     typeC = CUTENSOR_R_16F;
+    //     elementSize = sizeof(std::float16_t);
+    // }
+    // else
+    // {
+    typeA = CUTENSOR_R_32F;
+    typeB = CUTENSOR_R_32F;
+    typeC = CUTENSOR_R_32F;
+    elementSize = sizeof(float);
+    // }
 
     cutensorComputeDescriptor_t descCompute = (dataType == CUTENSOR_R_16F) ? CUTENSOR_COMPUTE_DESC_16F : CUTENSOR_COMPUTE_DESC_32F;
 
