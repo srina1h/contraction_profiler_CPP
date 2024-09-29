@@ -8,6 +8,8 @@ project(Contraction_Profiler_CPP CXX CUDA)
 # Include CPM
 include(cmake/CPM.cmake)
 
+find_package(CUDAToolkit REQUIRED)
+
 add_definitions(-DUSE_CUDA)    
 include_directories("${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES}")
 
