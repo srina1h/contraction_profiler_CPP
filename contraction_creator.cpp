@@ -162,10 +162,10 @@ public:
         return final_extent;
     }
 
-    vector<vector<float>> runContraction(const vector<Dimensions> &dimensionsList)
+    vector<vector<vector<double>>> runContraction(vector<Dimensions> &dimensionsList)
     {
-        vector<vector<float>> times;
-        times = vector<vector<float>>(dimensionsList.size(), vector<float>(5, 0.0));
+        vector<vector<vector<double>>> times;
+        times = vector<vector<vector<double>>>(dimensionsList.size(), vector<vector<double>>(5, vector<double>(5, 0.0)));
         for (const auto &dim : dimensionsList)
         {
             cout << "Dimension_A: ";
@@ -199,14 +199,14 @@ public:
             }
             cout << endl;
 
-            vector<float> time;
+            vector<vector<double>> time;
             time = run(dim.modes[0], dim.modes[1], dim.modes[2], dim.extents);
             times.push_back(time);
         }
         return times;
     }
 
-    void writeCsvFileWithTime(const vector<Dimensions> &dimensionsList, const string &outputFilePath, const vector<vector<float>> &times)
+    void writeCsvFileWithTime(const vector<Dimensions> &dimensionsList, const string &outputFilePath, vector < vector<vector<double>>)
     {
         ofstream file(outputFilePath);
         if (!file.is_open())
@@ -214,6 +214,8 @@ public:
             cerr << "Error opening output CSV file" << endl;
             return;
         }
+
+        file << "dim_A, dim_B, dim_C, contraction_indices, einstein_notation, data_type, default, default_flops, gett, gett_flops, tgett, tgett_flops, ttgt, ttgt_flops, defpat, defpat_flops\n";
 
         for (size_t i = 0; i < dimensionsList.size(); ++i)
         {
@@ -223,14 +225,19 @@ public:
             file << formatDimension(dim.Dimension_A_extents) << ","
                  << formatDimension(dim.Dimension_B_extents) << ","
                  << formatDimension(dim.Dimension_C_extents) << ","
-                 << dim.Contraction_indices << ","
-                 << dim.Einstein_notation << ","
+                 << "\"" << dim.Contraction_indices << "\"" << ","
+                 << "\"" << dim.Einstein_notation "\"" << ","
                  << dim.data_type << ","
-                 << time[0] << ","   // default
-                 << time[1] << ","   // gett
-                 << time[2] << ","   // tgett
-                 << time[3] << ","   // ttgt
-                 << time[4] << "\n"; // defpat
+                 << time[0][0] << ","   // default
+                 << time[0][1] << ","   // default flops
+                 << time[1][0] << ","   // gett
+                 << time[1][1] << ","   // gett flops
+                 << time[2][0] << ","   // tgett
+                 << time[2][1] << ","   // tgett flops
+                 << time[3][0] << ","   // ttgt
+                 << time[3][1] << ","   // ttgt flops
+                 << time[4][0] << ","   // defpat
+                 << time[4][1] << endl; // defpat flops
         }
 
         file.close();
@@ -238,14 +245,14 @@ public:
 
     string formatDimension(const vector<int64_t> &dim)
     {
-        string str = "()";
+        string str = "(\"";
         for (size_t i = 0; i < dim.size(); ++i)
         {
             str += to_string(dim[i]);
             if (i != dim.size() - 1)
                 str += ",";
         }
-        str += ")";
+        str += "\")";
         return str;
     }
 
