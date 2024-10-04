@@ -181,7 +181,7 @@ std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> 
                                            descCompute));
 
     HANDLE_ERROR(cutensorOperationDescriptorSetAttribute(handle,
-                                                         &desc,
+                                                         desc,
                                                          CUTENSOR_OPERATION_DESCRIPTOR_SCALAR_TYPE,
                                                          (void *)&dataType,
                                                          sizeof(dataType)));
