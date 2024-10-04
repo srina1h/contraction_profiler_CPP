@@ -37,20 +37,20 @@ std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> 
     cutensorDataType_t typeA, typeB, typeC;
     size_t elementSize;
 
-    // if (dataType == CUTENSOR_R_16F)
-    // {
-    //     typeA = CUTENSOR_R_16F;
-    //     typeB = CUTENSOR_R_16F;
-    //     typeC = CUTENSOR_R_16F;
-    //     elementSize = sizeof(std::float16_t);
-    // }
-    // else
-    // {
-    typeA = CUTENSOR_R_32F;
-    typeB = CUTENSOR_R_32F;
-    typeC = CUTENSOR_R_32F;
-    elementSize = sizeof(float);
-    // }
+    if (dataType == CUTENSOR_R_16F)
+    {
+        typeA = CUTENSOR_R_16F;
+        typeB = CUTENSOR_R_16F;
+        typeC = CUTENSOR_R_16F;
+        elementSize = sizeof(std::float16_t);
+    }
+    else
+    {
+        typeA = CUTENSOR_R_32F;
+        typeB = CUTENSOR_R_32F;
+        typeC = CUTENSOR_R_32F;
+        elementSize = sizeof(float);
+    }
 
     cutensorComputeDescriptor_t descCompute = (dataType == CUTENSOR_R_16F) ? CUTENSOR_COMPUTE_DESC_16F : CUTENSOR_COMPUTE_DESC_32F;
 
