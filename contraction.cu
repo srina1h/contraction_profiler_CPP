@@ -44,6 +44,8 @@ std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> 
         typeB = CUTENSOR_R_16F;
         typeC = CUTENSOR_R_16F;
         elementSize = sizeof(_Float16);
+
+        cutensorComputeDescriptor_t descCompute = CUTENSOR_COMPUTE_DESC_16F;
     }
     else
     {
@@ -51,9 +53,9 @@ std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> 
         typeB = CUTENSOR_R_32F;
         typeC = CUTENSOR_R_32F;
         elementSize = sizeof(float);
-    }
 
-    cutensorComputeDescriptor_t descCompute = (dataType == CUTENSOR_R_16F) ? CUTENSOR_COMPUTE_DESC_16F : CUTENSOR_COMPUTE_DESC_32F;
+        cutensorComputeDescriptor_t descCompute = CUTENSOR_COMPUTE_DESC_32F;
+    }
 
     int nmodeA = modeA.size();
     int nmodeB = modeB.size();
