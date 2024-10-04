@@ -200,7 +200,7 @@ public:
             cout << endl;
 
             vector<vector<double>> time;
-            time = run(dim.modes[0], dim.modes[1], dim.modes[2], dim.extents, CUTENSOR_R_32F);
+            time = run(dim.modes[0], dim.modes[1], dim.modes[2], dim.extents, CUTENSOR_R_16F);
             times.push_back(time);
         }
         return times;
