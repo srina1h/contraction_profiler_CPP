@@ -30,7 +30,7 @@
         }                                                   \
     };
 
-std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vector<int> modeB, std::unordered_map<int, int64_t> extent, cutensorAlgo_t algo, cutensorDataType_t dataType = CUTENSOR_R_32F)
+std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vector<int> modeB, std::unordered_map<int, int64_t> extent, cutensorAlgo_t algo, cutensorDataType_t dataType = CUTENSOR_R_16F)
 {
     // Host element type definition
     typedef float floatTypeCompute;
