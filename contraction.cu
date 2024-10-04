@@ -37,6 +37,8 @@ std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> 
     cutensorDataType_t typeA, typeB, typeC;
     size_t elementSize;
 
+    cutensorComputeDescriptor_t descCompute;
+
     if (dataType == CUTENSOR_R_16F)
     {
         printf("Running with FP16\n");
@@ -45,7 +47,7 @@ std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> 
         typeC = CUTENSOR_R_16F;
         elementSize = sizeof(_Float16);
 
-        cutensorComputeDescriptor_t descCompute = CUTENSOR_COMPUTE_DESC_16F;
+        descCompute = CUTENSOR_COMPUTE_DESC_16F;
     }
     else
     {
@@ -54,7 +56,7 @@ std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> 
         typeC = CUTENSOR_R_32F;
         elementSize = sizeof(float);
 
-        cutensorComputeDescriptor_t descCompute = CUTENSOR_COMPUTE_DESC_32F;
+        descCompute = CUTENSOR_COMPUTE_DESC_32F;
     }
 
     int nmodeA = modeA.size();
