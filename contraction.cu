@@ -42,7 +42,7 @@ std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> 
         typeA = CUTENSOR_R_16F;
         typeB = CUTENSOR_R_16F;
         typeC = CUTENSOR_R_16F;
-        elementSize = sizeof(std::float16_t);
+        elementSize = sizeof(_Float16);
     }
     else
     {
@@ -111,12 +111,24 @@ std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> 
     //     curand_uniform(NULL, (float *)C_d, elementsC);
     // }
 
-    for (int64_t i = 0; i < elementsA; i++)
-        ((float *)A)[i] = (((float)rand()) / RAND_MAX - 0.5) * 100;
-    for (int64_t i = 0; i < elementsB; i++)
-        ((float *)B)[i] = (((float)rand()) / RAND_MAX - 0.5) * 100;
-    for (int64_t i = 0; i < elementsC; i++)
-        ((float *)C)[i] = (((float)rand()) / RAND_MAX - 0.5) * 100;
+    if (dataType == CUTENSOR_R_16F)
+    {
+        for (int64_t i = 0; i < elementsA; i++)
+            ((_Float16 *)A)[i] = ((_Float16)rand()) / RAND_MAX;
+        for (int64_t i = 0; i < elementsB; i++)
+            ((_Float16 *)B)[i] = ((_Float16)rand()) / RAND_MAX;
+        for (int64_t i = 0; i < elementsC; i++)
+            ((_Float16 *)C)[i] = ((_Float16)rand()) / RAND_MAX;
+    }
+    else
+    {
+        for (int64_t i = 0; i < elementsA; i++)
+            ((float *)A)[i] = (((float)rand()) / RAND_MAX - 0.5) * 100;
+        for (int64_t i = 0; i < elementsB; i++)
+            ((float *)B)[i] = (((float)rand()) / RAND_MAX - 0.5) * 100;
+        for (int64_t i = 0; i < elementsC; i++)
+            ((float *)C)[i] = (((float)rand()) / RAND_MAX - 0.5) * 100;
+    }
 
     HANDLE_CUDA_ERROR(cudaMemcpy(A_d, A, sizeA, cudaMemcpyHostToDevice));
     HANDLE_CUDA_ERROR(cudaMemcpy(B_d, B, sizeB, cudaMemcpyHostToDevice));
