@@ -183,7 +183,7 @@ std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> 
     HANDLE_ERROR(cutensorOperationDescriptorSetAttribute(handle,
                                                          desc,
                                                          CUTENSOR_OPERATION_DESCRIPTOR_SCALAR_TYPE,
-                                                         (void *)dataType,
+                                                         datatype.data(),
                                                          sizeof(dataType)));
 
     cutensorDataType_t scalarType;
