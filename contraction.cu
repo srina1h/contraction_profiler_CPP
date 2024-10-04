@@ -187,6 +187,9 @@ std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> 
                                                          (void *)&scalarType,
                                                          sizeof(scalarType)));
 
+    printf("Scalar type: %d\n", scalarType);
+    printf("Data type: %d\n", dataType);
+
     assert(scalarType == dataType);
     floatTypeCompute alpha = (floatTypeCompute)1.0f;
     floatTypeCompute beta = (floatTypeCompute)0.f;
