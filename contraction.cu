@@ -197,6 +197,9 @@ std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> 
 
     assert(scalarType == dataType);
 
+    float alpha = 1.0f;
+    float beta = 0.f;
+
     if (dataType == CUTENSOR_R_16F)
     {
         _Float16 alpha = (_Float16)1.0f;
