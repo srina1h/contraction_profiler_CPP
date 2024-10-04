@@ -33,14 +33,6 @@
 std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vector<int> modeB, std::unordered_map<int, int64_t> extent, cutensorAlgo_t algo, cutensorDataType_t dataType = CUTENSOR_R_16F)
 {
     // Host element type definition
-    if (dataType == CUTENSOR_R_16F)
-    {
-        typedef _Float16 floatTypeCompute;
-    }
-    else
-    {
-        typedef float floatTypeCompute;
-    }
     cutensorDataType_t typeA, typeB, typeC;
     size_t elementSize;
 
@@ -204,8 +196,17 @@ std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> 
     printf("Data type: %d\n", dataType);
 
     assert(scalarType == dataType);
-    floatTypeCompute alpha = (floatTypeCompute)1.0f;
-    floatTypeCompute beta = (floatTypeCompute)0.f;
+
+    if (dataType == CUTENSOR_R_16F)
+    {
+        _Float16 alpha = (_Float16)1.0f;
+        _Float16 beta = (_Float16)0.f;
+    }
+    else
+    {
+        float alpha = 1.0f;
+        float beta = 0.f;
+    }
 
     cutensorPlanPreference_t planPref;
     HANDLE_ERROR(cutensorCreatePlanPreference(
