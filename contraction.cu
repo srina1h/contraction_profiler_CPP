@@ -39,6 +39,7 @@ std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> 
 
     if (dataType == CUTENSOR_R_16F)
     {
+        printf("Running with FP16\n");
         typeA = CUTENSOR_R_16F;
         typeB = CUTENSOR_R_16F;
         typeC = CUTENSOR_R_16F;
