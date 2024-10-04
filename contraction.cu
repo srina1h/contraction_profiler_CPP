@@ -285,7 +285,7 @@ std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> 
     return returnVector;
 }
 
-std::vector<std::vector<double>> run(std::vector<char> modeC, std::vector<char> modeA, std::vector<char> modeB, std::unordered_map<char, int64_t> extent, cutensorDataType_t dataType = CUTENSOR_R_32F)
+std::vector<std::vector<double>> run(std::vector<char> modeC, std::vector<char> modeA, std::vector<char> modeB, std::unordered_map<char, int64_t> extent, cutensorDataType_t dataType = CUTENSOR_R_16F)
 {
     std::vector<int> modeC_int(modeC.begin(), modeC.end());
     std::vector<int> modeA_int(modeA.begin(), modeA.end());
