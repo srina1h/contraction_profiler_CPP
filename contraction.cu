@@ -33,7 +33,7 @@
 std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> modeA, std::vector<int> modeB, std::unordered_map<int, int64_t> extent, cutensorAlgo_t algo, cutensorDataType_t dataType = CUTENSOR_R_16F)
 {
     // Host element type definition
-    typedef _Float16 floatTypeCompute;
+    typedef float floatTypeCompute;
     cutensorDataType_t typeA, typeB, typeC;
     size_t elementSize;
 
@@ -196,7 +196,7 @@ std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> 
     printf("Scalar type: %d\n", scalarType);
     printf("Data type: %d\n", dataType);
 
-    assert(scalarType == dataType);
+    assert(scalarType == CUTENSOR_R_32F);
 
     floatTypeCompute alpha = (floatTypeCompute)1.1f;
     floatTypeCompute beta = (floatTypeCompute)0.f;
