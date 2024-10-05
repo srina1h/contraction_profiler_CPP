@@ -180,11 +180,11 @@ std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> 
                                            descC, modeC.data(),
                                            descCompute));
 
-    HANDLE_ERROR(cutensorOperationDescriptorSetAttribute(handle,
-                                                         desc,
-                                                         CUTENSOR_OPERATION_DESCRIPTOR_SCALAR_TYPE,
-                                                         &dataType,
-                                                         sizeof(dataType)));
+    // HANDLE_ERROR(cutensorOperationDescriptorSetAttribute(handle,
+    //                                                      desc,
+    //                                                      CUTENSOR_OPERATION_DESCRIPTOR_SCALAR_TYPE,
+    //                                                      &dataType,
+    //                                                      sizeof(dataType)));
 
     cutensorDataType_t scalarType;
     HANDLE_ERROR(cutensorOperationDescriptorGetAttribute(handle,
