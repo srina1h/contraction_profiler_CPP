@@ -309,10 +309,10 @@ int main(int argc, char *argv[])
     {
         outputFilePath = (string)argv[2];
     }
-    auto start = high_resolution_clock::now();
+    auto start1 = high_resolution_clock::now();
     creator.writeCsvFileWithTime(dimensionsList, outputFilePath, times);
-    auto end = high_resolution_clock::now();
-    auto duration = duration_cast<seconds>(end - start);
+    auto end1 = high_resolution_clock::now();
+    auto duration = duration_cast<seconds>(end1 - start1);
     cout << "Time taken for file writing: " << duration.count() << " seconds" << endl;
     return 0;
 }
