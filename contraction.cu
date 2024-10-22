@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <vector>
 #include "contraction.cuh"
+#include <chrono>
 
 // Handle cuTENSOR errors
 #define HANDLE_ERROR(x)                                         \
@@ -99,6 +100,8 @@ std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> 
     cudaMalloc((void **)&B_d, sizeB);
     cudaMalloc((void **)&C_d, sizeC);
 
+    auto start = std::chrono::high_resolution_clock::now();
+
     void *A = malloc(elementSize * elementsA);
     void *B = malloc(elementSize * elementsB);
     void *C = malloc(elementSize * elementsC);
@@ -134,6 +137,12 @@ std::vector<double> performContraction(std::vector<int> modeC, std::vector<int> 
         for (int64_t i = 0; i < elementsC; i++)
             ((float *)C)[i] = (((float)rand()) / RAND_MAX - 0.5) * 100;
     }
+
+    auto end = std::chrono::high_resolution_clock::now();
+
+    auto duration = std::chrono::duration_cast<std::chrono::seconds>(end - start);
+
+    printf("Host memalloc time time: %f s\n", duration.count());
 
     HANDLE_CUDA_ERROR(cudaMemcpy(A_d, A, sizeA, cudaMemcpyHostToDevice));
     HANDLE_CUDA_ERROR(cudaMemcpy(B_d, B, sizeB, cudaMemcpyHostToDevice));
