@@ -10,10 +10,12 @@
 #include <algorithm>
 #include <sstream>
 #include <unordered_map>
+#include <chrono>
 
 #include "contraction.cuh"
 
 using namespace std;
+using namespace std::chrono;
 
 struct Dimensions
 {
@@ -292,7 +294,12 @@ int main(int argc, char *argv[])
 
     vector<vector<vector<double>>> times;
 
+    auto start = high_resolution_clock::now();
     times = creator.runContraction(dimensionsList);
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<seconds>(stop - start);
+    cout << "Time taken for contraction: " << duration.count() << " seconds" << endl;
+
     string outputFilePath;
     if (argc < 3)
     {
@@ -302,6 +309,10 @@ int main(int argc, char *argv[])
     {
         outputFilePath = (string)argv[2];
     }
+    auto start = high_resolution_clock::now();
     creator.writeCsvFileWithTime(dimensionsList, outputFilePath, times);
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<seconds>(stop - start);
+    cout << "Time taken for file writing: " << duration.count() << " seconds" << endl;
     return 0;
 }
