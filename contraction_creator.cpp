@@ -297,7 +297,7 @@ int main(int argc, char *argv[])
     auto start = high_resolution_clock::now();
     times = creator.runContraction(dimensionsList);
     auto end = high_resolution_clock::now();
-    auto duration = duration_cast<seconds>(stop - start);
+    auto duration = duration_cast<seconds>(end - start);
     cout << "Time taken for contractions: " << duration.count() << " seconds" << endl;
 
     string outputFilePath;
