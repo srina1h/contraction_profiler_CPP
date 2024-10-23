@@ -314,29 +314,34 @@ std::vector<std::vector<double>> run(std::vector<char> modeC, std::vector<char> 
 
     std::vector<double> returnVec1, returnVec2, returnVec3, returnVec4, returnVec5;
 
-    returnVec1 = performContraction(modeC_int, modeA_int, modeB_int, extent_int, algo, dataType);
-    HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
+    // returnVec1 = performContraction(modeC_int, modeA_int, modeB_int, extent_int, algo, dataType);
+    // HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
 
-    algo = CUTENSOR_ALGO_GETT;
+    // algo = CUTENSOR_ALGO_GETT;
 
-    returnVec2 = performContraction(modeC_int, modeA_int, modeB_int, extent_int, algo, dataType);
-    HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
+    // returnVec2 = performContraction(modeC_int, modeA_int, modeB_int, extent_int, algo, dataType);
+    // HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
 
     algo = CUTENSOR_ALGO_TGETT;
 
     returnVec3 = performContraction(modeC_int, modeA_int, modeB_int, extent_int, algo, dataType);
     HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
 
-    algo = CUTENSOR_ALGO_TTGT;
+    // algo = CUTENSOR_ALGO_TTGT;
 
-    returnVec4 = performContraction(modeC_int, modeA_int, modeB_int, extent_int, algo, dataType);
-    HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
+    // returnVec4 = performContraction(modeC_int, modeA_int, modeB_int, extent_int, algo, dataType);
+    // HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
 
-    algo = CUTENSOR_ALGO_DEFAULT_PATIENT;
+    // algo = CUTENSOR_ALGO_DEFAULT_PATIENT;
 
-    returnVec5 = performContraction(modeC_int, modeA_int, modeB_int, extent_int, algo, dataType);
-    HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
+    // returnVec5 = performContraction(modeC_int, modeA_int, modeB_int, extent_int, algo, dataType);
+    // HANDLE_CUDA_ERROR(cudaDeviceSynchronize());
 
-    std::vector<std::vector<double>> returnVec = {returnVec1, returnVec2, returnVec3, returnVec4, returnVec5};
+    double time = 0;
+    double gflops = 0;
+
+    std::vector<double> returnVec9 = {0, 0};
+
+    std::vector<std::vector<double>> returnVec = {returnVec9, returnVec9, returnVec3, returnVec9, returnVec9};
     return returnVec;
 }
